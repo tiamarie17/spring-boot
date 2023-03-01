@@ -1,7 +1,10 @@
 package com.pluralsight.conferencedemo.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
+
 import java.util.List;
 
 
@@ -18,7 +21,6 @@ public class Speaker {
     private String speaker_bio;
 
     @Lob //specifies a large object, helps JPA deal with larger data
-    @Type(type="org.hibernate.type.BinaryType") //helps Hibernate deal with binary data
     private byte[] speaker_photo; //bytes are good for binary data
 
     @ManyToMany(mappedBy = "speakers") // define other side of many to many relationship set up in Session
