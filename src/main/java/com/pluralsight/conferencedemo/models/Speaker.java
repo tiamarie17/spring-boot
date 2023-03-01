@@ -1,32 +1,57 @@
 package com.pluralsight.conferencedemo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
+import java.util.List;
+
 
 @Entity(name = "speakers")
 public class Speaker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long speaker_id;
+
     private String first_name;
     private String last_name;
     private String title;
     private String company;
     private String speaker_bio;
 
+    @Lob //specifies a large object, helps JPA deal with larger data
+    @Type(type="org.hibernate.type.BinaryType") //helps Hibernate deal with binary data
+    private byte[] speaker_photo; //bytes are good for binary data
+
+    @ManyToMany(mappedBy = "speakers") // define other side of many to many relationship set up in Session
+    private List<Session> sessions;
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+    public Long getSpeaker_id() {
+        return speaker_id;
+    }
+
+    public byte[] getSpeaker_photo() {
+        return speaker_photo;
+    }
+
+    public void setSpeaker_photo(byte[] speaker_photo) {
+        this.speaker_photo = speaker_photo;
+    }
+
+    public void setSpeaker_id(Long speaker_id) {
+        this.speaker_id = speaker_id;
+    }
+
+
     public Speaker(){
 
     }
 
-    public long getSpeaker_id() {
-        return speaker_id;
-    }
-
-    public void setSpeaker_id(long speaker_id) {
-        this.speaker_id = speaker_id;
-    }
 
     public String getFirst_name() {
         return first_name;
