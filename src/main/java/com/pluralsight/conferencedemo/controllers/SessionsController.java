@@ -15,15 +15,15 @@ public class SessionsController {
     private SessionRepository sessionRepository;
 
     //list that returns all of the sessions
-    @GetMapping
+    @GetMapping //tells which HTTP verb to use to call the endpoint
     public List<Session> list(){
-        return sessionRepository.findAll();
+        return sessionRepository.findAll(); //queries all sessions in database and return them as a list
     }
 
     @GetMapping
-    @RequestMapping("{id}")
-    public Session get(@PathVariable Long id){
-        return sessionRepository.getOne(id);
+    @RequestMapping("{id}") //allows you to get a specific session by id (adds an id to the url that is already in requestMapping class)
+    public Session get(@PathVariable Long id){ //set incoming param
+        return sessionRepository.getOne(id); //pull param from url and injects id into method
     }
 
     @PostMapping
