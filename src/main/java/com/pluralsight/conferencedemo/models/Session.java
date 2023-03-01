@@ -1,9 +1,8 @@
 package com.pluralsight.conferencedemo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity(name = "sessions") //annotate as a JPA entity, named after database table
 public class Session {  //singular because it represents one instance/row of data
@@ -14,6 +13,22 @@ public class Session {  //singular because it represents one instance/row of dat
     private String session_name;
     private String session_description;
     private Integer session_length;
+
+    @ManyToMany //telling JPA how tables are related in db
+    @JoinTable(  //defines the join table and the foreign key columns
+            name = "session_speakers",
+            joinColumns = @JoinColumn(name = "session_id"),
+            inverseJoinColumns = @JoinColumn(name= "speaker_id")
+    )
+    private List<Speaker> speakers;
+
+    public List<Speaker> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(List<Speaker> speakers) {
+        this.speakers = speakers;
+    }
 
     //default constructor, helps with serialization and deserialization
     public Session(){
