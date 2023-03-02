@@ -1,5 +1,7 @@
 package com.pluralsight.conferencedemo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.Type;
@@ -9,6 +11,7 @@ import java.util.List;
 
 
 @Entity(name = "speakers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Speaker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,8 @@ public class Speaker {
     private byte[] speaker_photo; //bytes are good for binary data
 
     @ManyToMany(mappedBy = "speakers") // define other side of many to many relationship set up in Session
+    @JsonIgnore //prevent back serialization
+
     private List<Session> sessions;
 
     public List<Session> getSessions() {

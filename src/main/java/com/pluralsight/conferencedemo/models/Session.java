@@ -1,10 +1,13 @@
 package com.pluralsight.conferencedemo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity(name = "sessions") //annotate as a JPA entity, named after database table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //Hibernate typically adds stub methods to handle lazy loading/eager loading
 public class Session {  //singular because it represents one instance/row of data
     //declare local variables
     @Id //specifies which is primary key
@@ -14,7 +17,8 @@ public class Session {  //singular because it represents one instance/row of dat
     private String session_description;
     private Integer session_length;
 
-    @ManyToMany //telling JPA how tables are related in db
+    @JsonIgnore //prevent infinite JSON from being created
+    @ManyToMany //tell JPA how tables are related in db
     @JoinTable(  //defines the join table and the foreign key columns
             name = "session_speakers",
             joinColumns = @JoinColumn(name = "session_id"),
