@@ -46,8 +46,10 @@ public class SessionsController {
     @RequestMapping(value="{id}", method=RequestMethod.PUT)
     public Session update(@PathVariable Long id, @RequestBody Session session){
         //since this is put, we expect all attributes to be passed in
-        //TODO: Add validation that all attributes are passed in, otherwise return
+        //TODO: Add validation that all attributes are passed in, otherwise return 400
         Session existingSession = sessionRepository.getOne(id);
+        //BeanUtils object takes existingSession and copies incoming session data onto it
+        //The third property allows us to ignore properties on the Java entity/object that we don't want to update (i.e. primary key)
         BeanUtils.copyProperties(session, existingSession, "session_id");
         return sessionRepository.saveAndFlush(existingSession);
     }
